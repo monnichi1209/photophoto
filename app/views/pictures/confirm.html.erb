@@ -1,0 +1,14 @@
+<h1>確認画面</h1>
+
+<p>コメント: <%= @picture.caption %></p>
+<% if @picture.image_cache.present? %>
+  <p>画像: <%= image_tag @picture.image.url if @picture.image.present? %></p>
+<% end %>
+
+<%= form_with(model: @picture, local: true) do |form| %>
+  <%= form.hidden_field :caption %>
+  <%= form.hidden_field :image_cache %>
+  <%= form.submit "投稿する" %>
+
+  <%= form.submit "戻る", name: 'back' %>
+<% end %>
