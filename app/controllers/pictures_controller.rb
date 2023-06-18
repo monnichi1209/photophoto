@@ -14,7 +14,8 @@
       @picture.image.retrieve_from_cache! session[:picture_cache] if session[:picture_cache].present?
       if @picture.save
         session[:picture_cache] = nil
-        redirect_to @picture
+        PictureMailer.picture_posted(current_user).deliver_now
+        redirect_to @picture, notice: 'Picture was successfully posted.'
       else
         render :new
       end
