@@ -1,0 +1,2 @@
+class PictureMailer < ApplicationMailer
+end
