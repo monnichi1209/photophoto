@@ -10,7 +10,8 @@
     end
   
     def create
-      @picture = Picture.new(picture_params)
+      @picture = current_user.pictures.build(picture_params)
+      @picture.user_id = current_user.id
       @picture.image.retrieve_from_cache! session[:picture_cache] if session[:picture_cache].present?
       if @picture.save
         session[:picture_cache] = nil
@@ -27,6 +28,7 @@
   
     def confirm
       @picture = Picture.new(picture_params)
+      @picture.user_id = current_user.id
       if @picture.image.present?
         session[:picture_cache] = @picture.image.cache_name
         render :new if @picture.invalid?

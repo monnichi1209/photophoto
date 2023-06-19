@@ -8,6 +8,7 @@ class User < ApplicationRecord
                     has_secure_password
                     validates :password, presence: true, length: { minimum: 6 }, on: :create, allow_blank: true
                     validates :email, uniqueness: true
+                    has_many :pictures
 
 
 end
