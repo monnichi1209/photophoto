@@ -9,6 +9,11 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
   end
 
+  def favorites
+    @user = User.find(params[:id])
+    @favorites = @user.favorites
+  end
+
   def create
     @user = User.new(user_params)
     if @user.save
