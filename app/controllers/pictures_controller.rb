@@ -1,5 +1,6 @@
  class PicturesController < ApplicationController
     before_action :set_picture, only: [:show, :edit, :update, :destroy]
+    before_action :require_permission, only: [:edit, :update, :destroy]
   
     def index
       @pictures = Picture.all
@@ -41,9 +42,18 @@
     
 
     def edit
+      unless current_user == @picture.user
+        redirect_to pictures_path, alert: "他人の投稿を編集することはできません。"
+      end
     end
+    
   
     def update
+      unless current_user == @picture.user
+        redirect_to pictures_path, alert: "他人の投稿を編集することはできません。"
+        return
+      end
+
       if @picture.update(picture_params)
         redirect_to @picture, notice: 'Picture was successfully updated.'
       else
@@ -65,4 +75,12 @@
     def picture_params
     params.require(:picture).permit(:caption, :image)
     end
+
+    def require_permission
+    picture = Picture.find(params[:id])
+    unless current_user == picture.user
+    redirect_to pictures_path, alert: "他人の投稿を編集することはできません。"
+    end
+    end
+
     end

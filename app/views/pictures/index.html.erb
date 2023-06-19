@@ -21,13 +21,15 @@
         <td><%= picture.caption %></td>
         <td><%= picture.user.name %></td>
         <td><%= link_to '詳細', picture %></td>
-        <td><%= link_to '編集', edit_picture_path(picture) %></td>
-        <td><%= link_to '削除', picture, method: :delete, data: { confirm: 'Are you sure?' } 
-        %></td>
-        <td><% if picture.favorited_users.include?(current_user) %>
+        <% if @current_user == picture.user %>
+          <td><%= link_to '編集', edit_picture_path(picture) %></td>
+          <td><%= link_to '削除', picture, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <% end %>
+        <td>
+        <% if picture.favorited_users.include?(current_user) %>
         <%= link_to 'お気に入り削除', picture_favorite_path(picture, picture.favorites.find_by(user: current_user)), method: :delete %>
         <% else %>
-        <%= link_to 'お気に入り登録', picture_favorites_path(picture), method: :post %>
+          <%= link_to 'お気に入り登録', picture_favorites_path(picture), method: :post %>
         <% end %></td>
       </tr>
     <% end %>
