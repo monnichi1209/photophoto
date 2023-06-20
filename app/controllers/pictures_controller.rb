@@ -43,19 +43,13 @@
     def confirm
       @picture = Picture.new(picture_params)
       @picture.user_id = current_user.id
-  
-      unless @picture.image.present?
-        flash[:alert] = "No image uploaded. Please try again"
-        render :new
-        return
-      end
-  
-      session[:picture_cache] = @picture.image.cache_name
-  
-      if @picture.invalid?
+      session[:picture] = @picture.attributes
+      if @picture.valid?
+        render :confirm
+      else
         render :new
       end
-    end  
+    end
 
     def update
       unless current_user == @picture.user
@@ -82,7 +76,7 @@
     end
   
     def picture_params
-    params.require(:picture).permit(:caption, :image)
+    params.require(:picture).permit(:caption, :image, :image_cache)
     end
 
     def require_permission
