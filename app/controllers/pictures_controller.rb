@@ -41,8 +41,7 @@
     end
     
     def confirm
-      @picture = Picture.new(picture_params)
-      @picture.user_id = current_user.id
+      @picture = current_user.pictures.build(picture_params)
       session[:picture] = @picture.attributes
       if @picture.valid?
         render :confirm
