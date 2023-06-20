@@ -23,7 +23,7 @@
       <tr>
         <td><%= image_tag picture.image.url if picture.image.present? %></td>
         <td><%= picture.caption %></td>
-        <td><%= picture.user.name %></td>
+        <td><%= picture.user&.name %></td>
         <td><%= link_to '詳細', picture %></td>
         <% if @current_user == picture.user %>
           <td><%= link_to '編集', edit_picture_path(picture) %></td>
