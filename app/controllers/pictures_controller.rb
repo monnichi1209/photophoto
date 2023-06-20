@@ -17,7 +17,7 @@
       if @picture.save
         session[:picture_cache] = nil
         PictureMailer.picture_posted(current_user).deliver_now
-        redirect_to @picture, notice: 'Picture was successfully posted.'
+        redirect_to @picture, notice: '写真の投稿が完了しました.'
       else
         render :new
       end
@@ -42,6 +42,7 @@
     
 
     def edit
+      @picture = Picture.find(params[:id])
       unless current_user == @picture.user
         redirect_to pictures_path, alert: "他人の投稿を編集することはできません。"
       end
@@ -55,7 +56,7 @@
       end
 
       if @picture.update(picture_params)
-        redirect_to @picture, notice: 'Picture was successfully updated.'
+        redirect_to @picture, notice: '編集が完了しました.'
       else
         render :edit
       end
@@ -63,7 +64,7 @@
   
     def destroy
       @picture.destroy
-      redirect_to pictures_url, notice: 'Picture was successfully destroyed.'
+      redirect_to pictures_url, notice: '投稿を削除しました.'
     end
   
     private
@@ -78,7 +79,7 @@
 
     def require_permission
     picture = Picture.find(params[:id])
-    unless current_user == picture.user
+    unless current_user == @picture.user
     redirect_to pictures_path, alert: "他人の投稿を編集することはできません。"
     end
     end

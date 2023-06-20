@@ -13,3 +13,34 @@
  *= require_tree .
  *= require_self
  */
+
+@import 'bootstrap';
+
+.navbar-right {
+  margin-left: auto;
+}
+
+.footer {
+  background-color: #f8f9fa;
+  height: 30px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+}
+
+.body-bg {
+  background-image: url("/assets/IMG_2935.jpg");
+  background-repeat: no-repeat;
+  background-size: 100% auto;
+  background-position: center;
+}
+
+body {
+  background-size: cover;
+  background-position: center;
+}
+
+
+
+

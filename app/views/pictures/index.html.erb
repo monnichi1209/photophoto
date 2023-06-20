@@ -1,4 +1,8 @@
-<h1>写真一覧</h1>
+<h1>写真共有アプリ</h1>
+
+<% flash.each do |key, value| %>
+  <%= content_tag(:div, value, class: "#{key}") %>
+<% end %>
 
 <%= link_to '新規投稿', new_picture_path %>
 <%= link_to 'お問い合わせ', new_contact_path %>
@@ -30,8 +34,10 @@
         <%= link_to 'お気に入り削除', picture_favorite_path(picture, picture.favorites.find_by(user: current_user)), method: :delete %>
         <% else %>
           <%= link_to 'お気に入り登録', picture_favorites_path(picture), method: :post %>
-        <% end %></td>
+        <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
+
 </table>
