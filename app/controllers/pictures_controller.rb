@@ -1,6 +1,8 @@
  class PicturesController < ApplicationController
     before_action :set_picture, only: [:show, :edit, :update, :destroy]
     before_action :require_permission, only: [:edit, :update, :destroy]
+    before_action :authenticate_user, only: [:confirm]
+
   
     def index
       @pictures = Picture.all
@@ -28,17 +30,7 @@
       @favorite = current_user.favorites.find_by(picture_id: @picture.id)
     end
   
-    def confirm
-      @picture = Picture.new(picture_params)
-      @picture.user_id = current_user.id
-      if @picture.image.present?
-        session[:picture_cache] = @picture.image.cache_name
-        render :new if @picture.invalid?
-      else
-        flash[:alert] = "Image upload failed. Please try again"
-        render :new
-      end
-    end
+    
     
 
     def edit
@@ -48,7 +40,23 @@
       end
     end
     
+    def confirm
+      @picture = Picture.new(picture_params)
+      @picture.user_id = current_user.id
   
+      unless @picture.image.present?
+        flash[:alert] = "No image uploaded. Please try again"
+        render :new
+        return
+      end
+  
+      session[:picture_cache] = @picture.image.cache_name
+  
+      if @picture.invalid?
+        render :new
+      end
+    end  
+
     def update
       unless current_user == @picture.user
         redirect_to pictures_path, alert: "他人の投稿を編集することはできません。"
@@ -81,6 +89,12 @@
     picture = Picture.find(params[:id])
     unless current_user == @picture.user
     redirect_to pictures_path, alert: "他人の投稿を編集することはできません。"
+    end
+    end
+
+    def authenticate_user
+    if current_user.nil?
+    redirect_to login_url, alert: "You must be logged in to access this page."
     end
     end
 
